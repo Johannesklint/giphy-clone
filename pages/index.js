@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import Image from 'next/image'
 import useSWR from 'swr'
 import { request } from 'graphql-request'
 
@@ -9,12 +10,18 @@ export default function Home() {
   const { data, error } = useSWR(
     `{
       getTrending {
-        gifs
+        id
+        orignalImagesUrl
+        downsizedSmallHeight
+        downsizedSmallWidth
       }
     }`,
     fetcher
   )
-  console.log('data, error', { data, error })
+  console.log('data, error', data, error)
+  if (!data) {
+    return 'loading'
+  }
   return (
     <div className="container">
       <Head>
@@ -24,6 +31,17 @@ export default function Home() {
 
       <main>
         <Link href="/about">about</Link>
+        {data.getTrending.map((gifs) => {
+          console.log('gifs', gifs)
+          return (
+            <Image
+              key={gifs.id}
+              src={gifs.orignalImagesUrl}
+              height={gifs.downsizedSmallHeight}
+              width={gifs.downsizedSmallWidth}
+            />
+          )
+        })}
       </main>
 
       <footer>
