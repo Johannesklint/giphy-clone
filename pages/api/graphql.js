@@ -13,19 +13,39 @@ const typeDefs = gql`
   }
 
   type Query {
-    # getUser(name: String!): User!
+    getSearch(search: String): [Trending]
     getTrending: [Trending]
   }
 `
-
+const api_key = 'Ag87TeYV783S975gkbpdzvpVgeW9ft5W'
 const resolvers = {
   Query: {
-    getTrending: async () => {
+    getSearch: async (_, { search }) => {
       const { data } = await axios.get(
-        'https://api.giphy.com/v1/gifs/trending?api_key=Ag87TeYV783S975gkbpdzvpVgeW9ft5W&limit=15&rating=g'
+        `https://api.giphy.com/v1/gifs/search?api_key=${api_key}&q=${search}&limit=25&offset=0&rating=g&lang=en`
       )
       return data.data.map((gifs) => {
-        console.log(gifs.images.downsized_small)
+        console.log({
+          id: gifs.id,
+          orignalImagesUrl: gifs.images.original.url,
+          downsizedSmallUrl: gifs.images.downsized_small.mp4,
+          downsizedSmallHeight: gifs.images.downsized_small.height,
+          downsizedSmallWidth: gifs.images.downsized_small.width,
+        })
+        return {
+          id: gifs.id,
+          orignalImagesUrl: gifs.images.original.url,
+          downsizedSmallUrl: gifs.images.downsized_small.mp4,
+          downsizedSmallHeight: gifs.images.downsized_small.height,
+          downsizedSmallWidth: gifs.images.downsized_small.width,
+        }
+      })
+    },
+    getTrending: async () => {
+      const { data } = await axios.get(
+        `https://api.giphy.com/v1/gifs/trending?api_key=${api_key}&limit=15&rating=g`
+      )
+      return data.data.map((gifs) => {
         return {
           id: gifs.id,
           orignalImagesUrl: gifs.images.original.url,

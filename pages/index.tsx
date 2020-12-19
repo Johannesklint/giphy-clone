@@ -1,27 +1,25 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
-import useSWR from 'swr'
-import { request } from 'graphql-request'
-
-const fetcher = (query) => request('/api/graphql', query)
+import { useGraphql } from './hooks/useGraphql'
+import Search from '../components/search'
 
 export default function Home() {
-  const { data, error } = useSWR(
-    `{
-      getTrending {
-        id
-        orignalImagesUrl
-        downsizedSmallHeight
-        downsizedSmallWidth
-      }
-    }`,
-    fetcher
-  )
-  console.log('data, error', data, error)
-  if (!data) {
-    return 'loading'
-  }
+  // const { data } = useGraphql(
+  //   `{
+  //     getTrending {
+  //       id
+  //       orignalImagesUrl
+  //       downsizedSmallHeight
+  //       downsizedSmallWidth
+  //     }
+  //   }`,
+  //   null
+  // )
+
+  // if (!data) {
+  //   return 'loading'
+  // }
   return (
     <div className="container">
       <Head>
@@ -30,18 +28,19 @@ export default function Home() {
       </Head>
 
       <main>
+        <Search />
         <Link href="/about">about</Link>
-        {data.getTrending.map((gifs) => {
-          console.log('gifs', gifs)
+        {/* {data.getTrending.map((gifs) => {
           return (
             <Image
+            
               key={gifs.id}
               src={gifs.orignalImagesUrl}
               height={gifs.downsizedSmallHeight}
               width={gifs.downsizedSmallWidth}
             />
           )
-        })}
+        })} */}
       </main>
 
       <footer>
