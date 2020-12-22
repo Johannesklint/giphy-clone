@@ -1,34 +1,39 @@
 import useSWR from 'swr'
-import { request } from 'graphql-request'
+import { request, GraphQLClient } from 'graphql-request'
 import { Variables } from 'graphql-request/dist/types'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 const key = '/api/graphql'
 
-function fetcher(query: any) {
-  return request(key, query)
-}
-
 export function useGraphql(query: string) {
+  function fetcher(query: string) {
+    return request(key, query)
+  }
   return useSWR(query, fetcher)
 }
 
 export function useMutate(query: string) {
-  const variablesRef = useRef({})
-  const { data, error, mutate } = useSWR(query)
+  const [data, setData] = useState<any>(null)
+  const [error, setError] = useState<string>(null)
+  const [loading, setLoading] = useState<boolean>(null)
+  const client = new GraphQLClient(key, { headers: {} })
 
-  const handleMutate = () => {
-    mutate({ ...data, ...variablesRef.current })
+  async function mutate(variables: Variables) {
+    setLoading(true)
+    try {
+      setData(await client.request(query, variables))
+      setLoading(false)
+    } catch (e) {
+      setError(e)
+    }
   }
 
-  const init = (variables: Variables) => {
+  return { data, loading, error, mutate }
+}
+
+export function useQuery(query: string, variables: Variables) {
+  function fetcher(query: string, variables: Variables) {
     return request(key, query, variables)
   }
-
-  return {
-    data,
-    error,
-    init,
-    mutate: handleMutate,
-  }
+  return useSWR([query, variables], fetcher)
 }

@@ -4,7 +4,7 @@ import axios from 'axios'
 
 // schema
 const typeDefs = gql`
-  type Trending {
+  type Result {
     id: ID
     orignalImagesUrl: String
     downsizedSmallUrl: String
@@ -13,11 +13,12 @@ const typeDefs = gql`
   }
 
   type Query {
-    getSearch(search: String): [Trending]
-    getTrending: [Trending]
+    getSearch(search: String): [Result]
+    getTrending: [Result]
   }
 `
-const api_key = 'Ag87TeYV783S975gkbpdzvpVgeW9ft5W'
+// add to env
+const api_key = process.env.NEXT_PUBLIC_API_KEY
 const resolvers = {
   Query: {
     getSearch: async (_, { search }) => {
@@ -25,13 +26,6 @@ const resolvers = {
         `https://api.giphy.com/v1/gifs/search?api_key=${api_key}&q=${search}&limit=25&offset=0&rating=g&lang=en`
       )
       return data.data.map((gifs) => {
-        console.log({
-          id: gifs.id,
-          orignalImagesUrl: gifs.images.original.url,
-          downsizedSmallUrl: gifs.images.downsized_small.mp4,
-          downsizedSmallHeight: gifs.images.downsized_small.height,
-          downsizedSmallWidth: gifs.images.downsized_small.width,
-        })
         return {
           id: gifs.id,
           orignalImagesUrl: gifs.images.original.url,
