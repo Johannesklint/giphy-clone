@@ -1,10 +1,28 @@
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import styled from 'styled-components'
+
+const Form = styled.form`
+  display: flex;
+  margin: 20px auto;
+  justify-content: center;
+`
+const StyledInput = styled.input`
+  border: 0;
+  padding: 9px 10px;
+  width: 500px;
+`
+
+const Button = styled.button`
+  background-color: #fb4b68;
+  padding: 10px 20px;
+`
 
 function Input() {
   const [value, setValue] = useState<string>('')
   return (
-    <input
+    <StyledInput
       name="search"
       type="text"
       value={value}
@@ -28,9 +46,11 @@ export default function Search() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <Input />
-      <button type="submit">Search</button>
-    </form>
+      <Button className="reset-btn" type="submit">
+        <Image src="/search.svg" width={20} height={20} />
+      </Button>
+    </Form>
   )
 }
