@@ -12,8 +12,16 @@ export function useGraphql(query: string) {
   return useSWR(query, fetcher)
 }
 
+type AutoComplete = {
+  getSearchAutoAutoComplete: [
+    {
+      name: string
+    }
+  ]
+}
+
 export function useMutate(query: string) {
-  const [data, setData] = useState<any>(null)
+  const [data, setData] = useState<AutoComplete>(null)
   const [error, setError] = useState<string>(null)
   const [loading, setLoading] = useState<boolean>(null)
   const client = new GraphQLClient(key, { headers: {} })

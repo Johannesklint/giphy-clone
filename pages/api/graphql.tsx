@@ -12,12 +12,19 @@ const typeDefs = gql`
     downsizedSmallWidth: String
   }
 
+  type Search {
+    id: ID
+    name: String
+  }
+
   type Query {
+    getSearchAutoAutoComplete(letters: String): [Search]
     getSearch(search: String): [Result]
     getTrending: [Result]
   }
 `
 const api_key = process.env.NEXT_PUBLIC_API_KEY
+
 const resolvers = {
   Query: {
     getSearch: async (_, { search }: string) => {
@@ -46,6 +53,21 @@ const resolvers = {
           downsizedSmallHeight: gifs.images.downsized_small.height,
           downsizedSmallWidth: gifs.images.downsized_small.width,
         }
+      })
+    },
+    getSearchAutoAutoComplete: async (
+      _,
+      {
+        letters,
+      }: {
+        letters: string
+      }
+    ) => {
+      const { data } = await axios.get(
+        `https://api.giphy.com/v1/gifs/search/tags?api_key=${api_key}&q=${letters}`
+      )
+      return data.data.map(({ name }: { name: string }) => {
+        return { name }
       })
     },
   },

@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import { useQuery } from '../hooks/useGraphql'
 
-const Wrapper = styled.div`
+const Wrapper = styled.ul`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
   grid-gap: 10px;
@@ -39,12 +39,13 @@ export default function Search() {
     <Wrapper>
       {data.getSearch.map((gifs) => {
         return (
-          <Image
-            key={gifs.id}
-            src={gifs.orignalImagesUrl}
-            height={gifs.downsizedSmallHeight}
-            width={gifs.downsizedSmallWidth}
-          />
+          <li key={gifs.id}>
+            <Image
+              src={gifs.orignalImagesUrl}
+              height={gifs.downsizedSmallHeight}
+              width={gifs.downsizedSmallWidth}
+            />
+          </li>
         )
       })}
     </Wrapper>

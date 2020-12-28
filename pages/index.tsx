@@ -35,9 +35,8 @@ export default function Home() {
       <List>
         {data.getTrending.map((gifs) => {
           return (
-            <li>
+            <li key={gifs.id}>
               <Image
-                key={gifs.id}
                 src={gifs.orignalImagesUrl}
                 height={gifs.downsizedSmallHeight}
                 width={gifs.downsizedSmallWidth}
