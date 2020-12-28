@@ -1,6 +1,6 @@
+import styled, { createGlobalStyle } from 'styled-components'
 import { ModalProvider } from '../components/modal'
 import Search from '../components/search-field'
-import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -16,13 +16,24 @@ const GlobalStyle = createGlobalStyle`
     font-family: inherit;
     outline: none;
   }
+
+  li {
+    list-style: none;
+  }
 `
+const Main = styled.main`
+  max-width: 1000px;
+  margin: 0 auto;
+`
+
 function MyApp({ Component, pageProps }) {
   return (
     <ModalProvider>
       <GlobalStyle />
-      <Search />
-      <Component {...pageProps} />
+      <Main>
+        <Search />
+        <Component {...pageProps} />
+      </Main>
     </ModalProvider>
   )
 }

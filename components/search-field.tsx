@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 const Form = styled.form`
   display: flex;
-  margin: 20px auto;
+  margin: 20px 0;
   justify-content: center;
 `
 const StyledInput = styled.input`

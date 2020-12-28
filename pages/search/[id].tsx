@@ -1,18 +1,14 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { useMutate, useQuery } from '../hooks/useGraphql'
+import styled from 'styled-components'
+import { useQuery } from '../hooks/useGraphql'
 
-type Props = {
-  result: [
-    {
-      id: string
-      orignalImagesUrl: string
-      downsizedSmallHeight: string
-      downsizedSmallWidth: string
-    }
-  ]
-}
+const Wrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+  grid-gap: 10px;
+`
 
 export default function Search() {
   const router = useRouter()
@@ -39,14 +35,18 @@ export default function Search() {
     return <div>Loading…</div>
   }
 
-  return data.getSearch.map((gifs) => {
-    return (
-      <Image
-        key={gifs.id}
-        src={gifs.orignalImagesUrl}
-        height={gifs.downsizedSmallHeight}
-        width={gifs.downsizedSmallWidth}
-      />
-    )
-  })
+  return (
+    <Wrapper>
+      {data.getSearch.map((gifs) => {
+        return (
+          <Image
+            key={gifs.id}
+            src={gifs.orignalImagesUrl}
+            height={gifs.downsizedSmallHeight}
+            width={gifs.downsizedSmallWidth}
+          />
+        )
+      })}
+    </Wrapper>
+  )
 }
