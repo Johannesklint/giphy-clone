@@ -1,25 +1,22 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import Image from 'next/image'
 import { useGraphql } from './hooks/useGraphql'
-import Search from '../components/search-field'
 
 export default function Home() {
-  // const { data } = useGraphql(
-  //   `{
-  //     getTrending {
-  //       id
-  //       orignalImagesUrl
-  //       downsizedSmallHeight
-  //       downsizedSmallWidth
-  //     }
-  //   }`
-  // )
+  const { data } = useGraphql(
+    `{
+      getTrending {
+        id
+        orignalImagesUrl
+        downsizedSmallHeight
+        downsizedSmallWidth
+      }
+    }`
+  )
 
-  // if (!data) {
-  //   return 'loading'
-  // }
-  
+  if (!data) {
+    return 'loading'
+  }
   return (
     <div className="container">
       <Head>
@@ -28,8 +25,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <Search />
-        {/* {data.getTrending.map((gifs) => {
+        {data.getTrending.map((gifs) => {
           return (
             <Image
               key={gifs.id}
@@ -38,7 +34,7 @@ export default function Home() {
               width={gifs.downsizedSmallWidth}
             />
           )
-        })} */}
+        })}
       </main>
 
       <footer>

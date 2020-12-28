@@ -17,11 +17,10 @@ const typeDefs = gql`
     getTrending: [Result]
   }
 `
-// add to env
 const api_key = process.env.NEXT_PUBLIC_API_KEY
 const resolvers = {
   Query: {
-    getSearch: async (_, { search }) => {
+    getSearch: async (_, { search }: string) => {
       const { data } = await axios.get(
         `https://api.giphy.com/v1/gifs/search?api_key=${api_key}&q=${search}&limit=25&offset=0&rating=g&lang=en`
       )
