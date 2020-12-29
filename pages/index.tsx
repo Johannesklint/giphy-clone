@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styled from 'styled-components'
+import Login from '../components/login'
 import { useGraphql } from './hooks/useGraphql'
 
 const List = styled.ul`
@@ -31,7 +32,7 @@ export default function Home() {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <Login />
       <List>
         {data.getTrending.map((gifs) => {
           return (

@@ -1,6 +1,8 @@
 import { ApolloServer } from 'apollo-server-micro'
 import { gql } from 'apollo-server-micro'
 import axios from 'axios'
+import bcrypt from 'bcryptjs'
+import { findUserByEmail, insertUser } from '../../util/mongodb'
 
 // schema
 const typeDefs = gql`
@@ -17,10 +19,23 @@ const typeDefs = gql`
     name: String
   }
 
+  type ExistingUser {
+    id: String
+    email: String
+    password: String
+  }
+
+  type User {
+    emailExist: Boolean
+    user: ExistingUser
+    isLoggedIn: Boolean
+  }
+
   type Query {
     getSearchAutoAutoComplete(letters: String): [Search]
     getSearch(search: String): [Result]
     getTrending: [Result]
+    writeUser(email: String, password: String): User
   }
 `
 const api_key = process.env.NEXT_PUBLIC_API_KEY
@@ -69,6 +84,23 @@ const resolvers = {
       return data.data.map(({ name }: { name: string }) => {
         return { name }
       })
+    },
+    writeUser: async (_, { email, password }: { email: string; password: string }) => {
+      try {
+        if (await findUserByEmail(email)) {
+          return {
+            emailExist: true,
+          }
+        }
+        const hashedPassword = await bcrypt.hash(password, 10)
+        const user = await insertUser(email, hashedPassword)
+        return {
+          user,
+          isLoggedIn: true,
+        }
+      } catch (error) {
+        throw new Error(error)
+      }
     },
   },
 }
