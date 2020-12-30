@@ -23,19 +23,22 @@ const Button = styled.button`
 
 export const ModalContext = createContext(null)
 
-export function ModalProvider({ children }) {
+export function ModalProvider({ children }: { children: JSX.Element }) {
   const [isOpen, setIsOpen] = useState(false)
   return <ModalContext.Provider value={{ isOpen, setIsOpen }}>{children}</ModalContext.Provider>
 }
 
 export function useModal() {
   const context = useContext(ModalContext)
+
   if (!context) {
     throw new Error('something wrong with modal')
   }
 
-  const handleOpen = (value = false) => {
-    context.setIsOpen((prev: boolean) => (value ? value : !prev))
+  const handleOpen = (value: boolean | undefined) => {
+    context.setIsOpen((prev: boolean) => {
+      return typeof value === 'boolean' ? value : !prev
+    })
   }
 
   return { isOpen: context.isOpen, setIsOpen: handleOpen }
