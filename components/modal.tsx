@@ -24,7 +24,7 @@ const Button = styled.button`
 export const ModalContext = createContext(null)
 
 export function ModalProvider({ children }) {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   return <ModalContext.Provider value={{ isOpen, setIsOpen }}>{children}</ModalContext.Provider>
 }
 

@@ -35,7 +35,7 @@ export default function LoginSignUp() {
         <Wrapper>
           {!showSignUp ? <Login /> : <SignUp />}
           <Button onClick={() => setShowSignUp((p: boolean) => !p)} className="reset-btn">
-            Not a member? Sign up!
+            {showSignUp ? <span>Log in</span> : <span>Not a member? Sign up!</span>}
           </Button>
         </Wrapper>
       </Modal>

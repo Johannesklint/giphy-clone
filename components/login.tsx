@@ -38,13 +38,9 @@ export default function Login() {
 
   const { data, error, mutate } = useMutate(gql`
     query($email: String, $password: String) {
-      writeUser(email: $email, password: $password) {
-        emailExist
-        isLoggedIn
-        user {
-          email
-          password
-        }
+      loginUser(email: $email, password: $password) {
+        id
+        email
       }
     }
   `)

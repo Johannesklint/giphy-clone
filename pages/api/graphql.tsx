@@ -36,6 +36,7 @@ const typeDefs = gql`
     getSearch(search: String): [Result]
     getTrending: [Result]
     writeUser(email: String, password: String): User
+    loginUser(email: String, password: String): ExistingUser
   }
 `
 const api_key = process.env.NEXT_PUBLIC_API_KEY
@@ -100,6 +101,15 @@ const resolvers = {
         }
       } catch (error) {
         throw new Error(error)
+      }
+    },
+    loginUser: async (_, { email, password }: { email: string; password: string }) => {
+      const { password: hash, _id: id, email: responseEmail } = await findUserByEmail(email)
+      const success = await bcrypt.compare(password, hash)
+      return {
+        isLoggedIn: success,
+        email: responseEmail,
+        id,
       }
     },
   },

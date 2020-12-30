@@ -90,11 +90,12 @@ export default function SignUp() {
         Re-type password
         <StyledInput
           type="password"
-          value={passwordValue}
-          onChange={handleChange(setPassword)}
+          value={secondPasswordValue}
+          onChange={handleChange(setSecondPassword)}
           id="second-password"
           placeholder="Type password again"
         />
+        {passwordValue !== secondPasswordValue ? <p>Your password does not match</p> : null}
       </Label>
       <Button type="submit">Sign up!</Button>
 
