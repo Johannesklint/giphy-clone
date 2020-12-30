@@ -1,7 +1,7 @@
 import type { AppProps /*, AppContext */ } from 'next/app'
-
 import styled, { createGlobalStyle } from 'styled-components'
 import { ModalProvider } from '../components/modal'
+import { UserProvider } from '../components/user'
 import Search from '../components/search-field'
 
 const GlobalStyle = createGlobalStyle`
@@ -34,11 +34,15 @@ const Main = styled.main`
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ModalProvider>
-      <GlobalStyle />
-      <Main>
-        <Search />
-        <Component {...pageProps} />
-      </Main>
+      <UserProvider>
+        <>
+          <GlobalStyle />
+          <Main>
+            <Search />
+            <Component {...pageProps} />
+          </Main>
+        </>
+      </UserProvider>
     </ModalProvider>
   )
 }

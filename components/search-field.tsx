@@ -5,7 +5,7 @@ import Input from './search-input'
 
 const Form = styled.form`
   display: flex;
-  margin: 20px 0;
+  margin: 40px 20px 40px;
   justify-content: center;
 `
 

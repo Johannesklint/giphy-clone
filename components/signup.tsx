@@ -1,7 +1,9 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMutate } from '../pages/hooks/useGraphql'
 import { gql } from 'graphql-request'
+import { useUser } from './user'
+import { useModal } from './modal'
 
 const Form = styled.form`
   display: flex;
@@ -36,6 +38,8 @@ export default function SignUp() {
   const [emailValue, setEmailValue] = useState<string>('')
   const [passwordValue, setPassword] = useState<string>('')
   const [secondPasswordValue, setSecondPassword] = useState<string>('')
+  const { setIsOpen } = useModal()
+  const { setUser } = useUser()
 
   const { data, error, mutate } = useMutate(gql`
     query($email: String, $password: String) {
@@ -43,12 +47,22 @@ export default function SignUp() {
         emailExist
         isLoggedIn
         user {
+          id
           email
           password
         }
       }
     }
   `)
+  const { email, emailExist } = data?.writeUser.user ?? {}
+  useEffect(() => {
+    if (email) {
+      setTimeout(() => {
+        setIsOpen(false)
+        setUser(email)
+      }, 1000)
+    }
+  }, [email, setIsOpen, setUser])
 
   function handleChange(setState: (arg0: string) => void) {
     return (event: { target: { value: string } }) => {
@@ -69,7 +83,7 @@ export default function SignUp() {
       <Label htmlFor="email">
         Email
         <StyledInput
-          type="text"
+          type="email"
           value={emailValue}
           onChange={handleChange(setEmailValue)}
           id="email"
@@ -95,8 +109,11 @@ export default function SignUp() {
           id="second-password"
           placeholder="Type password again"
         />
-        {passwordValue !== secondPasswordValue ? <p>Your password does not match</p> : null}
+        {secondPasswordValue && passwordValue !== secondPasswordValue ? (
+          <p>Your password does not match</p>
+        ) : null}
       </Label>
+      {emailExist ? <p>The email already exist</p> : null}
       <Button type="submit">Sign up!</Button>
 
       {!error && data && <p>You have been sign up</p>}

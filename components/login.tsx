@@ -1,7 +1,9 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMutate } from '../pages/hooks/useGraphql'
 import { gql } from 'graphql-request'
+import { useModal } from './modal'
+import { useUser } from './user'
 
 const Form = styled.form`
   display: flex;
@@ -35,7 +37,8 @@ const Button = styled.button`
 export default function Login() {
   const [emailValue, setEmailValue] = useState<string>('')
   const [passwordValue, setPassword] = useState<string>('')
-
+  const { setIsOpen } = useModal()
+  const { setUser } = useUser()
   const { data, error, mutate } = useMutate(gql`
     query($email: String, $password: String) {
       loginUser(email: $email, password: $password) {
@@ -44,6 +47,15 @@ export default function Login() {
       }
     }
   `)
+  const { email } = data?.loginUser ?? {}
+  useEffect(() => {
+    if (email) {
+      setTimeout(() => {
+        setIsOpen(false)
+        setUser(email)
+      }, 1000)
+    }
+  }, [email, setIsOpen, setUser])
 
   function handleChange(setState: (arg0: string) => void) {
     return (event: { target: { value: string } }) => {
@@ -64,7 +76,7 @@ export default function Login() {
       <Label htmlFor="email">
         Email
         <StyledInput
-          type="text"
+          type="email"
           value={emailValue}
           onChange={handleChange(setEmailValue)}
           id="email"

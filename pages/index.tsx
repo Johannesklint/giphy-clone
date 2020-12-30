@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styled from 'styled-components'
 import LoginSignup from '../components/login-signup'
+import { useUser } from '../components/user'
 import { useGraphql } from './hooks/useGraphql'
 
 const List = styled.ul`
@@ -12,6 +13,7 @@ const List = styled.ul`
 `
 
 export default function Home() {
+  const { user } = useUser()
   const { data } = useGraphql(
     gql`
       {
@@ -35,7 +37,7 @@ export default function Home() {
         <title>Giphy clone</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <LoginSignup />
+      {!user ? <LoginSignup /> : null}
       <List>
         {data.getTrending.map((gifs) => {
           return (
