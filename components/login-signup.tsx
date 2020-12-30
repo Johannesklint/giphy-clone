@@ -4,6 +4,11 @@ import Login from './login'
 import { Modal, useModal } from './modal'
 import SignUp from './signup'
 
+const Container = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -12,7 +17,7 @@ const Wrapper = styled.div`
 
 const Button = styled.button`
   background-color: var(--btn-color);
-  padding: 20px 25px;
+  padding: 10px;
   border: none;
   border-radius: 2px;
   cursor: pointer;
@@ -27,7 +32,7 @@ export default function LoginSignUp() {
   }
 
   return (
-    <>
+    <Container>
       <Button onClick={handleLogin} className="reset-btn">
         Log in
       </Button>
@@ -39,6 +44,6 @@ export default function LoginSignUp() {
           </Button>
         </Wrapper>
       </Modal>
-    </>
+    </Container>
   )
 }
