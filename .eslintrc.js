@@ -25,6 +25,7 @@ module.exports = {
     'plugin:react/recommended',
     'prettier/@typescript-eslint',
     'plugin:prettier/recommended',
+    'plugin:react-hooks/recommended',
   ],
   rules: {
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
@@ -33,5 +34,7 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'error',
   },
 }
