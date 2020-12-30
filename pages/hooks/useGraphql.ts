@@ -45,3 +45,7 @@ export function useQuery(query: string, variables: Variables) {
   }
   return useSWR([query, variables], fetcher)
 }
+
+export function gql(query: TemplateStringsArray[]) {
+  return query[0]
+}

@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { useMutate } from '../pages/hooks/useGraphql'
+import { useModal } from './modal'
 
 const Wrapper = styled.div`
   position: relative;
@@ -30,6 +31,7 @@ const Text = styled.li`
 
 function Input() {
   const router = useRouter()
+  const { isOpen: isModalOpen } = useModal()
   const [isOpen, setIsOpen] = useState<boolean>(true)
   const [value, setValue] = useState<string>('')
   const [selectedCount, setSelectedCount] = useState<number>(0)
@@ -98,7 +100,7 @@ function Input() {
         value={value}
         onChange={handleOnChange}
       />
-      {isOpen ? (
+      {isOpen || isModalOpen ? (
         <List>
           {data?.getSearchAutoAutoComplete.map(({ name }, index) => (
             <Text onMouseDown={handleEnter} key={name} isSelected={selectedCount === index}>

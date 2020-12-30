@@ -10,7 +10,7 @@ const Form = styled.form`
 `
 
 const Button = styled.button`
-  background-color: #fb4b68;
+  background-color: var(--btn-color);
   padding: 5px 20px;
 `
 

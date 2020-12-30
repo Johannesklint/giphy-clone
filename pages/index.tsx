@@ -1,7 +1,8 @@
+import { gql } from 'graphql-request'
 import Head from 'next/head'
 import Image from 'next/image'
 import styled from 'styled-components'
-import Login from '../components/login'
+import LoginSignup from '../components/login-signup'
 import { useGraphql } from './hooks/useGraphql'
 
 const List = styled.ul`
@@ -12,14 +13,16 @@ const List = styled.ul`
 
 export default function Home() {
   const { data } = useGraphql(
-    `{
-      getTrending {
-        id
-        orignalImagesUrl
-        downsizedSmallHeight
-        downsizedSmallWidth
+    gql`
+      {
+        getTrending {
+          id
+          orignalImagesUrl
+          downsizedSmallHeight
+          downsizedSmallWidth
+        }
       }
-    }`
+    `
   )
 
   if (!data) {
@@ -29,10 +32,10 @@ export default function Home() {
   return (
     <div className="container">
       <Head>
-        <title>Create Next App</title>
+        <title>Giphy clone</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Login />
+      <LoginSignup />
       <List>
         {data.getTrending.map((gifs) => {
           return (

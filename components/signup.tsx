@@ -32,9 +32,10 @@ const Button = styled.button`
   cursor: pointer;
 `
 
-export default function Login() {
+export default function SignUp() {
   const [emailValue, setEmailValue] = useState<string>('')
   const [passwordValue, setPassword] = useState<string>('')
+  const [secondPasswordValue, setSecondPassword] = useState<string>('')
 
   const { data, error, mutate } = useMutate(gql`
     query($email: String, $password: String) {
@@ -76,6 +77,7 @@ export default function Login() {
         />
       </Label>
       <Label htmlFor="password">
+        Password
         <StyledInput
           type="password"
           value={passwordValue}
@@ -84,9 +86,19 @@ export default function Login() {
           placeholder="Password"
         />
       </Label>
-      <Button type="submit">Log in</Button>
+      <Label htmlFor="second-password">
+        Re-type password
+        <StyledInput
+          type="password"
+          value={passwordValue}
+          onChange={handleChange(setPassword)}
+          id="second-password"
+          placeholder="Type password again"
+        />
+      </Label>
+      <Button type="submit">Sign up!</Button>
 
-      {!error && data && <p>You have been logged in</p>}
+      {!error && data && <p>You have been sign up</p>}
     </Form>
   )
 }
