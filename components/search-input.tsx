@@ -34,7 +34,7 @@ function Input() {
   const { isOpen: isModalOpen } = useModal()
   const [isOpen, setIsOpen] = useState<boolean>(true)
   const [value, setValue] = useState<string>('')
-  const [selectedCount, setSelectedCount] = useState<number>(0)
+  const [selectedCount, setSelectedCount] = useState<number>(-1)
   const { data, mutate } = useMutate(`
     query($letters: String!) {
       getSearchAutoAutoComplete(letters: $letters) {
@@ -48,15 +48,18 @@ function Input() {
     if (value.length >= 2) {
       mutate({ letters: value })
     }
+
+    if (value.length === 0) {
+      mutate({ letters: '' })
+    }
     setValue(value)
   }
 
   function handleKeyDown(event: { keyCode: number }) {
     setIsOpen(true)
-    console.log('event.keyCode', event.keyCode)
     const isUp = event.keyCode === 38
     if (isUp) {
-      setSelectedCount((prev) => (prev === 0 ? prev : prev - 1))
+      setSelectedCount((prev) => (prev === -1 ? prev : prev - 1))
     }
     const isDown = event.keyCode === 40
     if (isDown) {
@@ -66,10 +69,11 @@ function Input() {
 
     const isEnter = event.keyCode === 13
     if (isEnter) {
-      const { name } = data.getSearchAutoAutoComplete.find((_, index) => index === selectedCount)
+      const { name } =
+        data.getSearchAutoAutoComplete.find((_, index) => index === selectedCount) ?? {}
       router.push({
         pathname: '/search/[id]',
-        query: { id: name },
+        query: { id: name || value },
       })
       setIsOpen(false)
       setValue(name)
