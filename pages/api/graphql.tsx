@@ -2,7 +2,7 @@ import { ApolloServer } from 'apollo-server-micro'
 import { gql } from 'apollo-server-micro'
 import axios from 'axios'
 import bcrypt from 'bcryptjs'
-import { findUserByEmail, insertUser } from '../../util/mongodb'
+import { findUserByEmail, insertUser, updateUserById } from '../../util/mongodb'
 
 // schema
 const typeDefs = gql`
@@ -20,7 +20,7 @@ const typeDefs = gql`
   }
 
   type ExistingUser {
-    id: String
+    id: ID
     email: String
     password: String
   }
@@ -31,12 +31,17 @@ const typeDefs = gql`
     isLoggedIn: Boolean
   }
 
+  type Lol {
+    id: ID
+  }
+
   type Query {
     getSearchAutoAutoComplete(letters: String): [Search]
     getSearch(search: String): [Result]
     getTrending: [Result]
     writeUser(email: String, password: String): User
     loginUser(email: String, password: String): ExistingUser
+    updateUser(giphyId: String, email: String): Lol
   }
 `
 const api_key = process.env.NEXT_PUBLIC_API_KEY
@@ -59,8 +64,9 @@ const resolvers = {
     },
     getTrending: async () => {
       const { data } = await axios.get(
-        `https://api.giphy.com/v1/gifs/trending?api_key=${api_key}&limit=15&rating=g`
+        `https://api.giphy.com/v1/gifs/trending?api_key=${api_key}&limit=25&rating=g`
       )
+      console.log(data.data, '\n\n\n\n\n\n')
       return data.data.map((gifs) => {
         return {
           id: gifs.id,
@@ -111,6 +117,12 @@ const resolvers = {
         email: responseEmail,
         id,
       }
+    },
+    updateUser: async (_, { giphyId, email }: { giphyId: string; email: string }) => {
+      const { _id: userId } = await findUserByEmail(email)
+      const value = await updateUserById(userId, [{ id: giphyId }])
+      console.log('value', value)
+      return { id: 'd' }
     },
   },
 }

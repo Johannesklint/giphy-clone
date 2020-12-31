@@ -64,3 +64,14 @@ export async function insertUser(email: string, password: string) {
     })
     .then(({ ops }) => ops[0])
 }
+
+type Likes = {
+  id: string
+}
+export async function updateUserById(id: string, update: Likes[]) {
+  const { db } = await connectToDatabase()
+  return db
+    .collection('users')
+    .findOneAndUpdate({ _id: id }, { $set: update }, { returnOriginal: false })
+    .then(({ value }) => value)
+}

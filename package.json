@@ -19,6 +19,7 @@
     "prettier": "^2.2.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-masonry-css": "^1.0.14",
     "styled-components": "^5.2.1",
     "swr": "^0.3.9"
   },
