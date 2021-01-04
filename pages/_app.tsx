@@ -25,12 +25,6 @@ const GlobalStyle = createGlobalStyle`
   li {
     list-style: none;
   }
-  .my-masonry-grid {
-    display: flex;
-  }
-  .my-masonry-grid_column {
-    margin: 10px;
-  } 
 `
 const Main = styled.main`
   max-width: 1000px;
