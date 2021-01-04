@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import styled from 'styled-components'
-import { useMutate } from '../pages/hooks/useGraphql'
+import { gql, useMutate } from '../pages/hooks/useGraphql'
 import { useModal } from './modal'
 
 const Wrapper = styled.div`
@@ -35,7 +35,7 @@ function Input() {
   const [isOpen, setIsOpen] = useState<boolean>(true)
   const [value, setValue] = useState<string>('')
   const [selectedCount, setSelectedCount] = useState<number>(-1)
-  const { data, mutate } = useMutate(`
+  const { data, mutate } = useMutate(gql`
     query($letters: String!) {
       getSearchAutoAutoComplete(letters: $letters) {
         name

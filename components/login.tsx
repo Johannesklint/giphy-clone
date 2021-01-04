@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
-import { useMutate } from '../pages/hooks/useGraphql'
-import { gql } from 'graphql-request'
+import { gql, useMutate } from '../pages/hooks/useGraphql'
 import { useModal } from './modal'
 import { useUser } from './user'
 
@@ -39,6 +38,7 @@ export default function Login() {
   const [passwordValue, setPassword] = useState<string>('')
   const { setIsOpen } = useModal()
   const { setUser } = useUser()
+
   const { data, error, mutate } = useMutate(gql`
     query($email: String, $password: String) {
       loginUser(email: $email, password: $password) {

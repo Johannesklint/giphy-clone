@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 import { request, GraphQLClient } from 'graphql-request'
-import { Variables } from 'graphql-request/dist/types'
+import { RequestDocument, Variables } from 'graphql-request/dist/types'
 import { useState } from 'react'
 
 const key = '/api/graphql'
@@ -12,12 +12,11 @@ export function useGraphql(query: string) {
   return useSWR(query, fetcher)
 }
 
-export function useMutate(query: string) {
+export function useMutate(query: RequestDocument) {
   const [data, setData] = useState(null)
   const [error, setError] = useState<string>(null)
   const [loading, setLoading] = useState<boolean>(null)
   const client = new GraphQLClient(key, { headers: {} })
-
   async function mutate(variables: Variables) {
     setLoading(true)
     try {
@@ -38,6 +37,6 @@ export function useQuery(query: string, variables: Variables) {
   return useSWR([query, variables], fetcher)
 }
 
-export function gql(query: TemplateStringsArray[]) {
+export function gql(query: TemplateStringsArray) {
   return query[0]
 }

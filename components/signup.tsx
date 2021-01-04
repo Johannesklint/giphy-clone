@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
-import { useMutate } from '../pages/hooks/useGraphql'
-import { gql } from 'graphql-request'
+import { gql, useMutate } from '../pages/hooks/useGraphql'
 import { useUser } from './user'
 import { useModal } from './modal'
 
