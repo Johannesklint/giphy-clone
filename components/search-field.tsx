@@ -17,7 +17,10 @@ const Button = styled.button`
 export default function Search() {
   const router = useRouter()
 
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event: {
+    preventDefault: () => void
+    target: { search: { value: string } }
+  }) {
     event.preventDefault()
     const { value } = event.target.search
     if (value) {
