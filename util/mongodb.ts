@@ -16,14 +16,18 @@ if (!MONGODB_DB) {
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
-let cached = global.mongo
+
+const globalAny: any = global
+
+let cached = globalAny.mongo
 
 if (!cached) {
-  cached = global.mongo = { conn: null, promise: null }
+  cached = globalAny.mongo = { conn: null, promise: null }
 }
 
 export async function connectToDatabase() {
   if (cached.conn) {
+    console.log('cached.conn', cached.conn)
     return cached.conn
   }
   if (!cached.promise) {
@@ -32,14 +36,21 @@ export async function connectToDatabase() {
       useUnifiedTopology: true,
     }
 
-    cached.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => {
-      return {
-        client,
-        db: client.db(MONGODB_DB),
+    cached.promise = MongoClient.connect(MONGODB_URI, opts).then(
+      (client: { db: (arg0: string) => unknown }) => {
+        console.log({
+          client,
+          db: client.db(MONGODB_DB),
+        })
+        return {
+          client,
+          db: client.db(MONGODB_DB),
+        }
       }
-    })
+    )
   }
   cached.conn = await cached.promise
+  console.log(cached)
   return cached.conn
 }
 
@@ -50,7 +61,7 @@ export async function findUserByEmail(email: string) {
     .findOne({
       email,
     })
-    .then((user) => user || null)
+    .then((user: unknown) => user || null)
 }
 
 export async function insertUser(email: string, password: string) {

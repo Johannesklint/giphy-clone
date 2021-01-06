@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import { request, GraphQLClient } from 'graphql-request'
-import { RequestDocument, Variables } from 'graphql-request/dist/types'
 import { useState } from 'react'
+import type { RequestDocument, Variables } from 'graphql-request/dist/types'
 
 const key = '/api/graphql'
 

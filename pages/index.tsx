@@ -84,6 +84,14 @@ export default function Home() {
     `
   )
 
+  function handleLike(id: string) {
+    return () => {
+      if (!user) {
+        return null
+      }
+    }
+  }
+
   if (!data) {
     return <Loader />
   }
@@ -126,7 +134,9 @@ export default function Home() {
                         onMouseLeave={() => {
                           setShowDetailsId('')
                         }}>
-                        <Image src="/heart.png" width={20} height={20} />
+                        <button onClick={handleLike(gifs.id)}>
+                          <Image src="/heart.png" width={20} height={20} />
+                        </button>
                       </DetailsWrapper>
                     ) : null}
                   </Item>

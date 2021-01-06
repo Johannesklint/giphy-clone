@@ -57,7 +57,7 @@ export default function Login() {
     }
   }, [email, setIsOpen, setUser])
 
-  function handleChange(setState: (arg0: string) => void) {
+  function handleChange(setState: (prevState: string) => void) {
     return (event: { target: { value: string } }) => {
       setState(event.target.value)
     }
