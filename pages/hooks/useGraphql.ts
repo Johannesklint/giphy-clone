@@ -12,11 +12,34 @@ export function useGraphql(query: string) {
   return useSWR(query, fetcher)
 }
 
+interface Data {
+  loginUser?: {
+    email: string
+  }
+  getSearchAutoAutoComplete?: [
+    {
+      name: string
+      length: number
+    }
+  ]
+  writeUser?: {
+    email: string
+    isLoggedIn: boolean
+    emailExist: boolean
+    user: {
+      id: string
+      email: string
+      password: string
+    }
+  }
+}
+
 export function useMutate(query: RequestDocument) {
-  const [data, setData] = useState(null)
+  const [data, setData] = useState<Data>(null)
   const [error, setError] = useState<string>(null)
   const [loading, setLoading] = useState<boolean>(null)
   const client = new GraphQLClient(key, { headers: {} })
+
   async function mutate(variables: Variables) {
     setLoading(true)
     try {
@@ -30,7 +53,7 @@ export function useMutate(query: RequestDocument) {
   return { data, loading, error, mutate }
 }
 
-export function useQuery(query: string, variables: Variables) {
+export function useQuery(query: RequestDocument, variables: Variables) {
   function fetcher(query: string, variables: Variables) {
     return request(key, query, variables)
   }

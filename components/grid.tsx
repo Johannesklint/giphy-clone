@@ -18,7 +18,7 @@ interface IGrid extends Value {
 
 const GridContext = createContext<Value>(null)
 
-function GridProvider({ children, value }) {
+function GridProvider({ children, value }: { children: JSX.Element; value: Value }) {
   return <GridContext.Provider value={value}>{children}</GridContext.Provider>
 }
 
@@ -36,9 +36,9 @@ export function Grid({ gutter = 0, columnWidth = 0, rowHeight = 0, children }: I
 }
 
 export function GridItem({ children }: { children: JSX.Element }) {
-  const gridItemRef = useRef(null)
-  const gridItemWrapper = useRef(null)
-  const gridContext = useContext(GridContext)
+  const gridItemRef = useRef<HTMLDivElement>(null)
+  const gridItemWrapper = useRef<HTMLDivElement>(null)
+  const gridContext = useContext<Value>(GridContext)
 
   const { columnWidth, rowHeight, gutter: rowGap } = gridContext
 

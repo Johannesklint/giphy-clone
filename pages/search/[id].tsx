@@ -37,17 +37,24 @@ export default function Search() {
 
   return (
     <Wrapper>
-      {data.getSearch.map((gifs) => {
-        return (
-          <li key={gifs.id}>
-            <Image
-              src={gifs.orignalImagesUrl}
-              height={gifs.downsizedSmallHeight}
-              width={gifs.downsizedSmallWidth}
-            />
-          </li>
-        )
-      })}
+      {data.getSearch.map(
+        (gifs: {
+          id: string
+          orignalImagesUrl: string
+          downsizedSmallHeight: string
+          downsizedSmallWidth: string
+        }) => {
+          return (
+            <li key={gifs.id}>
+              <Image
+                src={gifs.orignalImagesUrl}
+                height={gifs.downsizedSmallHeight}
+                width={gifs.downsizedSmallWidth}
+              />
+            </li>
+          )
+        }
+      )}
     </Wrapper>
   )
 }

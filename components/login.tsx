@@ -47,6 +47,7 @@ export default function Login() {
       }
     }
   `)
+
   const { email } = data?.loginUser ?? {}
   useEffect(() => {
     if (email) {

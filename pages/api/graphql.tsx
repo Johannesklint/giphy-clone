@@ -48,7 +48,7 @@ const api_key = process.env.NEXT_PUBLIC_API_KEY
 
 const resolvers = {
   Query: {
-    getSearch: async (_, { search }: string) => {
+    getSearch: async (_: unknown, { search }: string) => {
       const { data } = await axios.get(
         `https://api.giphy.com/v1/gifs/search?api_key=${api_key}&q=${search}&limit=25&offset=0&rating=g&lang=en`
       )
@@ -78,7 +78,7 @@ const resolvers = {
       })
     },
     getSearchAutoAutoComplete: async (
-      _,
+      _: unknown,
       {
         letters,
       }: {
@@ -92,7 +92,7 @@ const resolvers = {
         return { name }
       })
     },
-    writeUser: async (_, { email, password }: { email: string; password: string }) => {
+    writeUser: async (_: unknown, { email, password }: { email: string; password: string }) => {
       try {
         if (await findUserByEmail(email)) {
           return {
@@ -109,7 +109,7 @@ const resolvers = {
         throw new Error(error)
       }
     },
-    loginUser: async (_, { email, password }: { email: string; password: string }) => {
+    loginUser: async (_: unknown, { email, password }: { email: string; password: string }) => {
       const { password: hash, _id: id, email: responseEmail } = await findUserByEmail(email)
       const success = await bcrypt.compare(password, hash)
       return {
@@ -118,7 +118,7 @@ const resolvers = {
         id,
       }
     },
-    updateUser: async (_, { giphyId, email }: { giphyId: string; email: string }) => {
+    updateUser: async (_: unknown, { giphyId, email }: { giphyId: string; email: string }) => {
       const { _id: userId } = await findUserByEmail(email)
       const value = await updateUserById(userId, [{ id: giphyId }])
       console.log('value', value)

@@ -53,7 +53,8 @@ export default function SignUp() {
       }
     }
   `)
-  const { email, emailExist } = data?.writeUser.user ?? {}
+  const { email } = data?.writeUser.user ?? {}
+  const { emailExist } = data?.writeUser ?? {}
   useEffect(() => {
     if (email) {
       setTimeout(() => {

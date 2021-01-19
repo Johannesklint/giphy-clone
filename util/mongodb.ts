@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid'
-import { MongoClient } from 'mongodb'
+import { MongoClient, Db } from 'mongodb'
 
 const { MONGODB_URI, MONGODB_DB } = process.env
 
@@ -14,22 +14,21 @@ if (!MONGODB_DB) {
 /**
  * Global is used here to maintain a cached connection across hot reloads
  * in development. This prevents connections growing exponentially
+ * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
+export async function connectToDatabase(): Promise<Db> {
+  const globalAny: any = global
+  let cached = globalAny.mongo
 
-const globalAny: any = global
+  if (!cached) {
+    cached = globalAny.mongo = { conn: null, promise: null }
+  }
 
-let cached = globalAny.mongo
-
-if (!cached) {
-  cached = globalAny.mongo = { conn: null, promise: null }
-}
-
-export async function connectToDatabase() {
   if (cached.conn) {
-    console.log('cached.conn', cached.conn)
     return cached.conn
   }
+
   if (!cached.promise) {
     const opts = {
       useNewUrlParser: true,
@@ -38,10 +37,6 @@ export async function connectToDatabase() {
 
     cached.promise = MongoClient.connect(MONGODB_URI, opts).then(
       (client: { db: (arg0: string) => unknown }) => {
-        console.log({
-          client,
-          db: client.db(MONGODB_DB),
-        })
         return {
           client,
           db: client.db(MONGODB_DB),
@@ -50,7 +45,6 @@ export async function connectToDatabase() {
     )
   }
   cached.conn = await cached.promise
-  console.log(cached)
   return cached.conn
 }
 
