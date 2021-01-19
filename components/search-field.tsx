@@ -13,14 +13,15 @@ const Button = styled.button`
   background-color: var(--btn-color);
   padding: 5px 20px;
 `
+interface Event {
+  preventDefault: () => void
+  target: { search: { value: string } }
+}
 
 export default function Search() {
   const router = useRouter()
 
-  async function handleSubmit(event: {
-    preventDefault: () => void
-    target: { search: { value: string } }
-  }) {
+  function handleSubmit(event: Event) {
     event.preventDefault()
     const { value } = event.target.search
     if (value) {

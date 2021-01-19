@@ -84,7 +84,8 @@ export default function Home() {
     `
   )
 
-  function handleLike() {
+  function handleLike(id: string) {
+    console.log('id', id)
     return () => {
       if (!user) {
         return null

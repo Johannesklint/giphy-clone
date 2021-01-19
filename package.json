@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint --fix ."
+    "lint": "eslint . --ext .ts --fix"
   },
   "dependencies": {
     "apollo-server-micro": "^2.19.0",
@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@types/react": "^17.0.0",
+    "@types/styled-components": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
     "@typescript-eslint/parser": "^4.11.1",
     "eslint": "^7.15.0",

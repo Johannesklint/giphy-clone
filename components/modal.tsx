@@ -21,15 +21,20 @@ const Button = styled.button`
   padding: 0px 9px;
 `
 
-export const ModalContext = createContext(null)
+interface IModal {
+  isOpen: boolean
+  setIsOpen: (prev: unknown) => void
+}
+
+export const ModalContext = createContext<IModal>(null)
 
 export function ModalProvider({ children }: { children: JSX.Element }) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
   return <ModalContext.Provider value={{ isOpen, setIsOpen }}>{children}</ModalContext.Provider>
 }
 
 export function useModal() {
-  const context = useContext(ModalContext)
+  const context = useContext<IModal>(ModalContext)
 
   if (!context) {
     throw new Error('something wrong with modal')
@@ -37,7 +42,7 @@ export function useModal() {
 
   const handleOpen = (value: boolean | undefined) => {
     context.setIsOpen((prev: boolean) => {
-      return typeof value === 'boolean' ? value : !prev
+      return value ? value : !prev
     })
   }
 
@@ -45,12 +50,12 @@ export function useModal() {
 }
 
 export function Modal({ isOpen, children }: { isOpen: boolean; children: JSX.Element }) {
-  const parentRef = useRef<HTMLInputElement>(null)
+  const parentRef = useRef<HTMLElement>(null)
   const { setIsOpen } = useModal()
 
   useEffect(() => {
     const el = document.createElement('div')
-    parentRef.current = document.getElementById('modal') as HTMLInputElement
+    parentRef.current = document.getElementById('modal') as HTMLElement
 
     if (parentRef.current) {
       parentRef.current.appendChild(el)

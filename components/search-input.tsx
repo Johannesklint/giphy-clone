@@ -61,6 +61,7 @@ function Input() {
     if (isUp) {
       setSelectedCount((prev) => (prev === -1 ? prev : prev - 1))
     }
+
     const isDown = event.keyCode === 40
     if (isDown) {
       const { length } = data.getSearchAutoAutoComplete
@@ -79,6 +80,7 @@ function Input() {
       setValue(name)
       setSelectedCount(0)
     }
+
     const isExit = event.keyCode === 27
     if (isExit) {
       setIsOpen(false)

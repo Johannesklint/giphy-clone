@@ -1,6 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
-const UserContext = createContext(null)
+interface IUser {
+  user: string
+  setUser: (value: string) => void
+}
+
+const UserContext = createContext<IUser>(null)
 
 export function UserProvider({ children }: { children: JSX.Element }) {
   const isBrowser = typeof window !== 'undefined'
@@ -22,7 +27,7 @@ export function UserProvider({ children }: { children: JSX.Element }) {
 }
 
 export function useUser() {
-  const context = useContext(UserContext)
+  const context = useContext<IUser>(UserContext)
 
   const { user, setUser } = context
   useEffect(() => {

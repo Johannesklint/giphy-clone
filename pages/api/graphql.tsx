@@ -46,6 +46,11 @@ const typeDefs = gql`
 `
 const api_key = process.env.NEXT_PUBLIC_API_KEY
 
+interface IPerson {
+  email: string
+  password: string
+}
+
 const resolvers = {
   Query: {
     getSearch: async (_: unknown, { search }: string) => {
@@ -92,7 +97,7 @@ const resolvers = {
         return { name }
       })
     },
-    writeUser: async (_: unknown, { email, password }: { email: string; password: string }) => {
+    writeUser: async (_: unknown, { email, password }: IPerson) => {
       try {
         if (await findUserByEmail(email)) {
           return {
@@ -109,7 +114,7 @@ const resolvers = {
         throw new Error(error)
       }
     },
-    loginUser: async (_: unknown, { email, password }: { email: string; password: string }) => {
+    loginUser: async (_: unknown, { email, password }: IPerson) => {
       const { password: hash, _id: id, email: responseEmail } = await findUserByEmail(email)
       const success = await bcrypt.compare(password, hash)
       return {

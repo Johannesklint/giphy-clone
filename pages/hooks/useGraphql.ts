@@ -19,7 +19,6 @@ interface Data {
   getSearchAutoAutoComplete?: [
     {
       name: string
-      length: number
     }
   ]
   writeUser?: {
@@ -60,6 +59,6 @@ export function useQuery(query: RequestDocument, variables: Variables) {
   return useSWR([query, variables], fetcher)
 }
 
-export function gql(query: TemplateStringsArray) {
+export function gql(query: TemplateStringsArray): string {
   return query[0]
 }
