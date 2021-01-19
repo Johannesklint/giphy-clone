@@ -2,7 +2,7 @@ import { ApolloServer } from 'apollo-server-micro'
 import { gql } from 'apollo-server-micro'
 import axios from 'axios'
 import bcrypt from 'bcryptjs'
-import { findUserByEmail, insertUser, updateUserById } from '../../util/mongodb'
+import { findUserByEmail, insertUser, updateUserById } from '../../database/mongodb'
 
 // schema
 const typeDefs = gql`
